@@ -44,7 +44,7 @@ const Navbar = () => {
       initial={{ y: -100 }}
       animate={{ y: 0 }}
       transition={{ duration: 0.5 }}
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+      className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 max-w-[100vw] overflow-x-hidden ${
         scrolled || isOpen ? "glass-card py-3" : "bg-transparent py-5"
       }`}
     >
