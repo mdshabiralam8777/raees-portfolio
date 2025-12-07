@@ -15,6 +15,30 @@ const Navbar = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  const handleNavClick = (e, href) => {
+    e.preventDefault();
+    setIsOpen(false);
+
+    if (href.startsWith("#")) {
+      setTimeout(() => {
+        const element = document.querySelector(href);
+        if (element) {
+          const offset = 80;
+          const elementPosition = element.getBoundingClientRect().top;
+          const offsetPosition = elementPosition + window.scrollY - offset;
+
+          window.scrollTo({
+            top: offsetPosition,
+            behavior: "smooth",
+          });
+
+          // Update URL without jumping
+          window.history.pushState(null, "", href);
+        }
+      }, 100);
+    }
+  };
+
   return (
     <motion.nav
       initial={{ y: -100 }}
@@ -31,6 +55,11 @@ const Navbar = () => {
             href="#"
             className="text-xl font-bold font-[family-name:var(--font-heading)]"
             whileHover={{ scale: 1.02 }}
+            onClick={(e) => {
+              e.preventDefault();
+              window.scrollTo({ top: 0, behavior: "smooth" });
+              window.history.pushState(null, "", " ");
+            }}
           >
             <span className="text-[var(--color-teal)]">MR</span>
             <span className="text-white">Alam</span>
@@ -42,8 +71,9 @@ const Navbar = () => {
               <motion.a
                 key={link.label}
                 href={link.href}
-                className="text-sm text-gray-300 hover:text-[var(--color-teal)] transition-colors"
+                className="text-sm text-gray-300 hover:text-[var(--color-teal)] transition-colors cursor-pointer"
                 whileHover={{ y: -2 }}
+                onClick={(e) => handleNavClick(e, link.href)}
               >
                 {link.label}
               </motion.a>
@@ -83,8 +113,8 @@ const Navbar = () => {
                   <a
                     key={link.label}
                     href={link.href}
-                    onClick={() => setIsOpen(false)}
-                    className="text-gray-300 hover:text-[var(--color-teal)] transition-colors"
+                    onClick={(e) => handleNavClick(e, link.href)}
+                    className="text-gray-300 hover:text-[var(--color-teal)] transition-colors cursor-pointer"
                   >
                     {link.label}
                   </a>
